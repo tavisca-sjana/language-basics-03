@@ -92,6 +92,9 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                         case 'F':
                             mealPlan[i] = GetIndex(letter,fat,ref same,letterLength);
                             break;
+                        default:
+                            mealPlan[i] = 0;
+                            break;
                     }
                    
                     if(mealPlan[i] != -1)
