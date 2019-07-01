@@ -42,26 +42,26 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
         public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
             // Add your code here.
-            //To keep track of the meals where the initial nutrients are same
-            List<int> same = new List<int>();
-            int foodItemsNum = protein.Length;
+            //To keep track of the meals where the initial nutrients are trackIndexesOfSameNutrients
+            List<int> trackIndexesOfSameNutrients = new List<int>();
+            int foodItemsLength = protein.Length;
             //To keep track of the characters remaining to parse in each dietPlan[i]
             int letterLength;
             
-            int [] cal = new int[foodItemsNum];
+            int [] calories = new int[foodItemsLength];
             int [] mealPlan = new int[dietPlans.Length];
             
             //Calculating Calories
-            for(int i=0;i<foodItemsNum;i++)
+            for(int i=0;i<foodItemsLength;i++)
             {
-                cal[i] = 5*protein[i] + 5*carbs[i] + 9*fat[i];
+                calories[i] = 5*protein[i] + 5*carbs[i] + 9*fat[i];
             }
 
             for(int i=0;i<dietPlans.Length;i++)
             {
-                same.Clear();
-                for(int j=0;j<foodItemsNum;j++)
-                    same.Add(j);
+                trackIndexesOfSameNutrients.Clear();
+                for(int j=0;j<foodItemsLength;j++)
+                    trackIndexesOfSameNutrients.Add(j);
                 letterLength = dietPlans[i].Length;
                 foreach(var letter in dietPlans[i])
                 {
@@ -69,28 +69,28 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                     switch(letter)
                     {
                         case 'c':
-                            mealPlan[i] = GetIndex(letter,carbs,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,carbs,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'C':
-                            mealPlan[i] = GetIndex(letter,carbs,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,carbs,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'p':
-                            mealPlan[i] = GetIndex(letter,protein,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,protein,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'P':
-                            mealPlan[i] = GetIndex(letter,protein,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,protein,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 't':
-                            mealPlan[i] = GetIndex(letter,cal,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,calories,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'T':
-                            mealPlan[i] = GetIndex(letter,cal,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,calories,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'f':
-                            mealPlan[i] = GetIndex(letter,fat,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,fat,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         case 'F':
-                            mealPlan[i] = GetIndex(letter,fat,ref same,letterLength);
+                            mealPlan[i] = GetIndex(letter,fat,ref trackIndexesOfSameNutrients,letterLength);
                             break;
                         default:
                             mealPlan[i] = 0;
@@ -108,7 +108,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
 
         }
 
-        private static int GetIndex(char letter,int[] nutrient,ref List<int> same,int letterLength)
+        private static int GetIndex(char letter,int[] nutrient,ref List<int> trackIndexesOfSameNutrients,int letterLength)
         {
             List<int> temp = new List<int>();
             int index=0,max,min;
@@ -118,7 +118,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             {
     
                 max = int.MinValue;
-                foreach(var i in same)
+                foreach(var i in trackIndexesOfSameNutrients)
                 {
                     if(nutrient[i]>max)
                     {
@@ -127,9 +127,9 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                     }
             
                 }
-                //same.Clear();
+                //trackIndexesOfSameNutrients.Clear();
 
-                 foreach(var j in same)
+                 foreach(var j in trackIndexesOfSameNutrients)
                 {
                     if(nutrient[j] == max)
                     {
@@ -137,37 +137,35 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
 
                     }
                 }
-                same = temp;
+                trackIndexesOfSameNutrients = temp;
 
             }
             //Min nutrient value for lowercase nutrients
             else
             {
                 min = int.MaxValue;
-                foreach(var i in same)
+                foreach(var i in trackIndexesOfSameNutrients)
                 {
                     if(nutrient[i]<min)
                     {
                         min = nutrient[i];
                         index = i;
                     }
-                    //same.Clear();
+                    //trackIndexesOfSameNutrients.Clear();
                 }
 
-                     foreach(var j in same)
+                     foreach(var j in trackIndexesOfSameNutrients)
                     {
                         if(nutrient[j] == min)
                             temp.Add(j);
                     }
 
-                   same = temp;     
+                   trackIndexesOfSameNutrients = temp;     
             }
 
         
-        
-
-        
-            if(same.Count > 1 && letterLength != 1)
+              
+            if(trackIndexesOfSameNutrients.Count > 1 && letterLength != 1)
                 return -1;
             return index;
     }
